@@ -23,6 +23,8 @@
 
 
 	<?php
+		require_once(dirname(__FILE__) . '/functions.php');
+		$connection = connect();
 		// define variables and set to empty values
 		$usernameErr = $emailErr = $passwordErr = $repasswordErr = "";
 		$username = $email = $password = $repassword = "";
@@ -82,15 +84,61 @@
 
 	<?php
 		if($password != $repassword)
-			echo "<h5 style='color:#ff0000;text-align:center;'>Passwords are different!</h5>";
-		echo "<h2>Input:</h2>";
-		echo $username;
-		echo "<br>";
-		echo $password;
-		echo "<br>";
-		echo $repassword;
-		echo "<br>";
-		echo $email;
+			{
+				echo "<script type = \"text/javascript\">
+	                                    alert(\"Passwords are different...\");
+	                                    window.location = (\"register.php\");
+	                                    </script>"; 
+	        }
+	      else{
+			// Prepare the statement
+			if ($_SERVER["REQUEST_METHOD"] == "POST"){
+
+				$query = "SELECT max(id) from USERS";
+				$stid = oci_parse($connection, $query);
+				if (!$stid) {
+				    $e = oci_error($connection);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+
+				// Perform the logic of the query
+				$r = oci_execute($stid);
+				if (!$r) {
+				    $e = oci_error($stid);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+
+				// Fetch the result of the query
+				$max_id = 0;
+				while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+				    foreach ($row as $item) {
+			        $max_id = $item;
+			    	}
+				}
+				$max_id++;
+
+				$query = "INSERT INTO users values($max_id, 1, '$username', '$password', 0, 0, sysdate)";
+				$stid = oci_parse($connection, $query);
+				if (!$stid) {
+				    $e = oci_error($connection);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+
+				// Perform the logic of the query
+				$r = oci_execute($stid);
+				if (!$r) {
+				    $e = oci_error($stid);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+				else{
+					echo "<br> <h4 style='text-align: center'> Registration successful </h4>";
+		            echo "<br><a href='meniu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
+				}
+
+
+				oci_free_statement($stid);
+				}
+			}
 	?>
 
 </body>
