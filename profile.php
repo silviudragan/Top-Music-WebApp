@@ -23,6 +23,25 @@
 			<li><a href="test_connection.php">Logout</a></li>
 		</ul>
 	</div>
+	<?php
+
+		require_once(dirname(__FILE__) . '/functions.php');
+		$connection = connect();
+
+	?>
+	<br>
+	<h3 style="margin-left: 150px;"> Profile </h3>
+	<div class="divider" style="border-bottom: 1px solid #414242; margin: 20px 0px;"></div>
+
+	<?php
+
+		echo "<h5 style='margin-left:90px;'> Username: </h5><br>
+			  <h5 style='margin-left:90px;'> Account type: </h5><br>
+			  <h5 style='margin-left:90px;'> Songs added: </h5><br>
+			  <h5 style='margin-left:90px;'> Can vote: </h5><br>
+			  <h5 style='margin-left:90px;'> Join date: </h5><br>";
+
+	?>
 
 
 </body>
