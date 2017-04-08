@@ -128,6 +128,24 @@
 			  <h5 style='margin-left:90px;'> Songs added: <strong> $number_of_songs </strong></h5><br>
 			  <h5 style='margin-left:90px;'> Can vote: <strong> $can_vote </strong></h5><br>
 			  <h5 style='margin-left:90px;'> Join date: <strong> $join_date </strong></h5><br>";
+		echo   "<tr>
+					<td class='contact-delete'>
+    				<form action='delete.php?user=$username' method='post' style='margin-left:90px;'>
+        				<input type='hidden' name='name' value='<?php echo $username; ?>''>
+        				<input type='submit' name='submit' value='Delete account'>
+    				</form>
+					</td>                
+                </tr>";
+
+        echo   "<br>
+        		<tr>
+				<td class='contact-update'>
+    			<form action='update.php?user=$username' method='post' style='margin-left:90px;'>
+        			<input type='hidden' name='name' value='<?php echo $username; ?>''>
+        			<input type='submit' name='submit' value='Change password'>
+    			</form>
+				</td>                
+                </tr>";
 
 	?>
 

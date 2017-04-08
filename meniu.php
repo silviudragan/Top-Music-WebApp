@@ -23,32 +23,15 @@
 			<li><a href="test_connection.php">Logout</a></li>
 		</ul>
 	</div>
+	<?php
+
+		require_once(dirname(__FILE__) . '/functions.php');
+		$connection = connect();
+
+	?>
 	<br>
 	<h3 style="margin-left: 150px;"> Feed your curiosity </h3>
 	<div class="divider" style="border-bottom: 1px solid #414242; margin: 20px 0px;"></div>
-
-	<?php
-
-		//Oracle DB user name
-		$username = 'PROJECT';
-
-		// Oracle DB user password
-		$password = 'PROJECT';
-
-		// Oracle DB connection string
-		$connection_string = 'localhost/xe';
-
-		//Connect to an Oracle database
-		$connection = oci_connect(
-		$username,
-		$password,
-		$connection_string
-		);
-
-		If (!$connection)
-		echo 'Connection failed';
-
-	?>
 
 	<?php
 		// define variables and set to empty values
@@ -117,6 +100,9 @@
 			    $e = oci_error($stid);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
+
+			$results_per_page = 100;
+			$number_of_results = 
 
 			// Fetch the results of the query
 			print "<h3 style='text-align: center'> Results </h3>";

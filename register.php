@@ -127,8 +127,10 @@
 				// Perform the logic of the query
 				$r = oci_execute($stid);
 				if (!$r) {
-				    $e = oci_error($stid);
-				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				    echo "<script type = \"text/javascript\">
+	                                    alert(\"* fields must be completed\");
+	                                    window.location = (\"register.php\");
+	                                    </script>"; 
 				}
 				else{
 					echo "<br> <h4 style='text-align: center'> Registration successful </h4>";
