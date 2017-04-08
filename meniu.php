@@ -78,9 +78,9 @@
 
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: left; margin-left:100px;">  
 	  Search: <input type="text" name="search">
-	  <input type="radio" name="option" value="male" checked> Name
-	  <input type="radio" name="option" value="female"> Genre
-	  <input type="radio" name="option" value="other"> Posted by
+	  <input type="radio" name="option" value="name" checked> Name
+	  <input type="radio" name="option" value="genre"> Genre
+	  <input type="radio" name="option" value="posted"> Posted by
 	  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;"> 
 	  <span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
 	</form>
@@ -89,10 +89,22 @@
 
 	<?php
 		// Prepare the statement
-		if ($_SERVER["REQUEST_METHOD"] == "POST" and $option == "Name"){
+		if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-			$query = "SELECT id_song, name, link, votes, posted_time from SONGS where NAME LIKE '%$search%'";
-			echo $query;
+			if($option == "name"){
+				$query = "SELECT id_song, name, link, votes, posted_time from SONGS where NAME LIKE '%$search%'";
+			}
+			if($option == "genre"){
+				$query = "SELECT s.id_song, s.name, s.link, s.votes, s.posted_time from SONGS s 
+						join SONG_GENRE sg on s.id_song = sg.id_song
+						join GENRES g on g.id_genre = sg.id_genre
+						where lower(g.name) like '%$search%'";
+			}
+			if($option == "posted"){
+				$query = "SELECT s.id_song, s.name, s.link, s.votes, s.posted_time from SONGS s
+						join USERS u on u.id = s.id_user
+						where username like '%$search%'";
+			}
 			$stid = oci_parse($connection, $query);
 			if (!$stid) {
 			    $e = oci_error($connection);
@@ -107,6 +119,7 @@
 			}
 
 			// Fetch the results of the query
+			print "<h3 style='text-align: center'> Results </h3>";
 			print "<table border='1' align='center'>\n";
 			print "<tr>\n";
 			print "<td> ID Song </td><td> Song </td><td> Link </td><td> Votes </td><td> Published Date </td>";
