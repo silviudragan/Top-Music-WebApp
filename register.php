@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Home Page</title>
+	<title>Register</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
@@ -17,7 +17,7 @@
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
 			<li><a href="test_connection.php"> Home </a></li>
 			<li><a href="login.php">Login</a></li>
-			<li  class="active" style="color:#5c5c3d;"><a href="register.php">Register</a></li>
+			<li><a href="register.php">Register</a></li>
 		</ul>
 	</div>
 
