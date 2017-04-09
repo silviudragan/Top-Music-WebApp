@@ -66,6 +66,12 @@
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
+			if(strpos($password, "'")){
+				echo "<script type = \"text/javascript\">
+	                                    alert(\"Possible hacker detected\");
+	                                    window.location = (\"login.php\");
+	                                    </script>";
+			}
 			$query = "SELECT * from USERS where USERNAME='$username' and PASSWORD='$password'";
 			$stid = oci_parse($connection, $query);
 			if (!$stid) {
