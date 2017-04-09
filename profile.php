@@ -137,15 +137,7 @@
 					</td>                
                 </tr>";
 
-        echo   "<br>
-        		<tr>
-				<td class='contact-update'>
-    			<form action='update.php?user=$username' method='post' style='margin-left:90px;'>
-        			<input type='hidden' name='name' value='<?php echo $username; ?>''>
-        			<input type='submit' name='submit' value='Change password'>
-    			</form>
-				</td>                
-                </tr>";
+        echo "<br><a href='update.php?user=$username'><h4 style='margin-left:70px;'> Change password </h4></a>";
 
 	?>
 
