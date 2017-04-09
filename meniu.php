@@ -24,10 +24,8 @@
 		</ul>
 	</div>
 	<?php
-
 		require_once(dirname(__FILE__) . '/functions.php');
 		$connection = connect();
-
 	?>
 	<br>
 	<h3 style="margin-left: 150px;"> Feed your curiosity </h3>
@@ -36,7 +34,6 @@
 	<?php
 		// define variables and set to empty values
 		$earch = $searchErr = $option = $optionErr = "";
-
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		  if (empty($_POST["search"])) {
 		    $searchErr = "<br>*the field is empty";
@@ -49,7 +46,6 @@
 		    $option = test_input($_POST["option"]);
 		  }
 		}
-
 		function test_input($data) {
 		  $data = trim($data);
 		  $data = stripslashes($data);
@@ -73,7 +69,6 @@
 	<?php
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
-
 			if($option == "name"){
 				$query = "SELECT id_song, name, link, votes, posted_time from SONGS where NAME LIKE '%$search%'";
 			}
@@ -93,16 +88,12 @@
 			    $e = oci_error($connection);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
-
 			// Perform the logic of the query
 			$r = oci_execute($stid);
 			if (!$r) {
 			    $e = oci_error($stid);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
-
-			$results_per_page = 100;
-			$number_of_results = 
 
 			// Fetch the results of the query
 			print "<h3 style='text-align: center'> Results </h3>";
@@ -118,8 +109,6 @@
 			    print "</tr>\n";
 			}
 			print "</table>\n";
-
-
 			oci_free_statement($stid);
 		}
 	?>
