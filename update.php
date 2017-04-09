@@ -3,7 +3,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Login</title>
+	<title>Update</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
@@ -23,12 +23,17 @@
 	<?php
 		require_once(dirname(__FILE__) . '/functions.php');
 		$connection = connect();
-		$username = $_GET['user'];
 		// define variables and set to empty values
-		$newpasswordErr = $passwordErr = $newpassword2Err = "";
-		$newpassword = $password = $newpassword2 = "";
+		$usernameErr = $newpasswordErr = $passwordErr = $newpassword2Err = "";
+		$username = $newpassword = $password = $newpassword2 = "";
 
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		  if (empty($_POST["username"])) {
+		    $usernameErr = "Username is required";
+		  } else {
+		    $username = test_input($_POST["username"]);
+		  }
+
 		  if (empty($_POST["password"])) {
 		    $passwordErr = "Old password is required";
 		  } else {
@@ -48,7 +53,6 @@
 		  }
 
 		}
-
 		function test_input($data) {
 		  $data = trim($data);
 		  $data = stripslashes($data);
@@ -57,8 +61,11 @@
 		}
 	?>
 
-	<h2 style="text-align: center;">Login</h2>
+	<h2 style="text-align: center;">Change password</h2>
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  
+	  Username: <input type="text" name="username">
+	  <span class="error"><?php echo $usernameErr;?></span>
+	  <br><br>
 	  Old password: <input type="password" name="password">
 	  <span class="error"><?php echo $passwordErr;?></span>
 	  <br><br>
@@ -75,7 +82,6 @@
 	<?php
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
-
 			$query = "UPDATE users set password='$newpassword' where username='$username'";
 			$stid = oci_parse($connection, $query);
 			if (!$stid) {
@@ -92,7 +98,7 @@
 			else{
 				echo "<script type = \"text/javascript\">
 	                                    alert(\"Password changed...\");
-	                                    window.location = (\"meniu.php\");
+	                                    window.location = (\"meniu.php?user=$username\");
 	                                    </script>"; 
 			}
 			oci_free_statement($stid);
