@@ -13,6 +13,13 @@
 <body style="background-color:#FAC8CD;">
 
 	<!-- The omnipresent navbar -->
+	<style>
+		.nav > li > a:hover, .nav-default > li > a:focus {
+	    background-color: #554E60;
+	    color: #554E60;
+	}
+	</style>
+
 	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
 		<ul class="nav nav-justified">
 			<li><a href="index.php" style="color: white">Home</a></li>
@@ -58,18 +65,25 @@
 		?>
 	</div>
 
-	<h2 style="text-align: center;">Login</h2>
-	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  
-	  Username: <input type="text" name="username">
-	  <span class="error"><?php echo $usernameErr;?></span>
-	  <br><br>
-	  Password: <input type="password" name="password">
-	  <span class="error"><?php echo $passwordErr;?></span>
-	  <br><br>
-	  <input type="submit" name="submit" value="Submit">
-	  <input type="reset"> 
-	</form>
+	<div class="container text-center">
+		<h2>Login</h2>
 
+		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+		  Username: <input type="text" name="username">
+		  <span class="error"><?php echo $usernameErr;?></span>
+		  <br><br>
+		  Password: <input type="password" name="password">
+		  <span class="error"><?php echo $passwordErr;?></span>
+		  <br><br>
+
+		  <div class="container text-center">
+			<input class="btn btn-primary" type="submit" name="submit" value="Submit">
+			<input class="btn btn-primary" type="reset">
+		  </div>
+
+		</form>
+	</div>
+	
 	<?php
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -106,8 +120,8 @@
 	                                    </script>"; 
 			}
 			else{
-	            //echo "<br><a href='meniu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
-	            echo "<script type='text/javascript'>location.href = 'meniu.php?user=$username';</script>";
+	            //echo "<br><a href='menu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
+	            echo "<script type='text/javascript'>location.href = 'menu.php?user=$username';</script>";
 			}
 
 			oci_free_statement($stid);

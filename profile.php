@@ -16,9 +16,16 @@
 <body style="background-color:#FAC8CD;">
 
 	<!-- The omnipresent navbar -->
+	<style>
+		.nav > li > a:hover, .nav-default > li > a:focus {
+	    background-color: #554E60;
+	    color: #554E60;
+	}
+	</style>
+
 	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
 		<ul class="nav nav-justified">
-			<li><a href="meniu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
+			<li><a href="menu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
 			<li><a href="profile.php?user=<?php echo $username; ?>" style="color: white">Profile</a></li>
 			<li><a href="index.php" style="color: white">Logout</a></li>
 		</ul>
@@ -42,92 +49,92 @@
 	<?php
 
 		//Account type
-			$stid = oci_parse($connection, "SELECT account_type from users where username='$username'");
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
+		$stid = oci_parse($connection, "SELECT account_type from users where username='$username'");
+		if (!$stid) {
+		   	$e = oci_error($connection);
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
 
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		// Perform the logic of the query
+		$r = oci_execute($stid);
+		if (!$r) {
+		    $e = oci_error($stid);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$result = 0;
+		while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+			foreach ($row as $item) {
+			    $result = $item;
 			}
-			$result = 0;
-			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-				foreach ($row as $item) {
-				    $result = $item;
-				}
-			}
-			$account_type = "user";
-			if($result == 2){
-				$account_type = "admin";
-			}
+		}
+		$account_type = "user";
+		if($result == 2){
+			$account_type = "admin";
+		}
 
 		//Number of songs added
-			$stid = oci_parse($connection, "SELECT count(s.id_user) from songs s
-							  join users u on u.id = s.id_user
-							  where u.username = '$username'");
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
+		$stid = oci_parse($connection, "SELECT count(s.id_user) from songs s
+						  join users u on u.id = s.id_user
+						  where u.username = '$username'");
+		if (!$stid) {
+		    $e = oci_error($connection);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
 
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		// Perform the logic of the query
+		$r = oci_execute($stid);
+		if (!$r) {
+		    $e = oci_error($stid);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$number_of_songs = 0;
+		while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+			foreach ($row as $item) {
+			    $number_of_songs = $item;
 			}
-			$number_of_songs = 0;
-			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-				foreach ($row as $item) {
-				    $number_of_songs = $item;
-				}
-			}
-		//Can vote
-			$stid = oci_parse($connection, "SELECT canvote from users where username='$username'");
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
+		}
+	//Can vote
+		$stid = oci_parse($connection, "SELECT canvote from users where username='$username'");
+		if (!$stid) {
+		    $e = oci_error($connection);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
 
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		// Perform the logic of the query
+		$r = oci_execute($stid);
+		if (!$r) {
+		    $e = oci_error($stid);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$result = 0;
+		while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+			foreach ($row as $item) {
+			    $result = $item;
 			}
-			$result = 0;
-			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-				foreach ($row as $item) {
-				    $result = $item;
-				}
-			}
-			$can_vote = "No";
-			if($result == 1){
-				$can_vote = "Yes";
-			}
-		//Join date
-			$stid = oci_parse($connection, "SELECT date_created from users where username='$username'");
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
+		}
+		$can_vote = "No";
+		if($result == 1){
+			$can_vote = "Yes";
+		}
+	//Join date
+		$stid = oci_parse($connection, "SELECT date_created from users where username='$username'");
+		if (!$stid) {
+		    $e = oci_error($connection);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
 
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		// Perform the logic of the query
+		$r = oci_execute($stid);
+		if (!$r) {
+		    $e = oci_error($stid);
+		    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$join_date = "";
+		while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+			foreach ($row as $item) {
+			    $join_date = $item;
 			}
-			$join_date = "";
-			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-				foreach ($row as $item) {
-				    $join_date = $item;
-				}
-			}
+		}
 
 		echo "<h5 style='margin-left:90px;'> Username: <strong> $username </strong> </h5><br>
 			  <h5 style='margin-left:90px;'> Account type: <strong> $account_type </strong> </h5><br>

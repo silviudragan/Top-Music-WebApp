@@ -13,9 +13,16 @@
 <body style="background-color:#FAC8CD;">
 
 	<!-- The omnipresent navbar -->
+	<style>
+		.nav > li > a:hover, .nav-default > li > a:focus {
+	    background-color: #554E60;
+	    color: #554E60;
+	}
+	</style>
+
 	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
 		<ul class="nav nav-justified">
-			<li><a href="meniu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
+			<li><a href="menu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
 			<li><a href="profile.php?user=<?php echo $username; ?>" style="color: white">Profile</a></li>
 			<li><a href="index.php" style="color: white">Logout</a></li>
 		</ul>
@@ -106,7 +113,7 @@
 			else{
 				echo "<script type = \"text/javascript\">
 	                                    alert(\"Password changed...\");
-	                                    window.location = (\"meniu.php?user=$username\");
+	                                    window.location = (\"menu.php?user=$username\");
 	                                    </script>"; 
 			}
 			oci_free_statement($stid);
