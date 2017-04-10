@@ -16,50 +16,52 @@
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
 			<li><a href="meniu.php?user=<?php echo $username; ?>"> Home </a></li>
 			<li><a href="profile.php?user=<?php echo $username; ?>">Profile</a></li>
-			<li><a href="test_connection.php">Logout</a></li>
+			<li><a href="index.php">Logout</a></li>
 		</ul>
 	</div>
 
-	<?php
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
-		// define variables and set to empty values
-		$usernameErr = $newpasswordErr = $passwordErr = $newpassword2Err = "";
-		$username = $newpassword = $password = $newpassword2 = "";
+	<div class="container text-center text-info bg-danger">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
+			// define variables and set to empty values
+			$usernameErr = $newpasswordErr = $passwordErr = $newpassword2Err = "";
+			$username = $newpassword = $password = $newpassword2 = "";
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		  if (empty($_POST["username"])) {
-		    $usernameErr = "Username is required";
-		  } else {
-		    $username = test_input($_POST["username"]);
-		  }
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  if (empty($_POST["username"])) {
+			    $usernameErr = "Username is required";
+			  } else {
+			    $username = test_input($_POST["username"]);
+			  }
 
-		  if (empty($_POST["password"])) {
-		    $passwordErr = "Old password is required";
-		  } else {
-		    $password = test_input($_POST["password"]);
-		  }
-		  
-		  if (empty($_POST["newpassword"])) {
-		    $newpasswordErr = "New password is required";
-		  } else {
-		    $newpassword = test_input($_POST["newpassword"]);
-		  }
+			  if (empty($_POST["password"])) {
+			    $passwordErr = "Old password is required";
+			  } else {
+			    $password = test_input($_POST["password"]);
+			  }
+			  
+			  if (empty($_POST["newpassword"])) {
+			    $newpasswordErr = "New password is required";
+			  } else {
+			    $newpassword = test_input($_POST["newpassword"]);
+			  }
 
-		  if (empty($_POST["newpassword2"])) {
-		    $newpassword2Err = "Confirm password is required";
-		  } else {
-		    $newpassword2 = test_input($_POST["newpassword2"]);
-		  }
+			  if (empty($_POST["newpassword2"])) {
+			    $newpassword2Err = "Confirm password is required";
+			  } else {
+			    $newpassword2 = test_input($_POST["newpassword2"]);
+			  }
 
-		}
-		function test_input($data) {
-		  $data = trim($data);
-		  $data = stripslashes($data);
-		  $data = htmlspecialchars($data);
-		  return $data;
-		}
-	?>
+			}
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
+	</div>
 
 	<h2 style="text-align: center;">Change password</h2>
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  

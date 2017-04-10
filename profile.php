@@ -8,7 +8,6 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
-
 </head>
 
 <body style="background-color:#ebebe0;">
@@ -20,15 +19,21 @@
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
 			<li><a href="meniu.php?user=<?php echo $username; ?>"> Home </a></li>
 			<li><a href="profile.php?user=<?php echo $username; ?>">Profile</a></li>
-			<li><a href="test_connection.php">Logout</a></li>
+			<li><a href="index.php">Logout</a></li>
 		</ul>
 	</div>
-	<?php
 
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
+	<div class="container text-center text-info bg-danger">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
 
-	?>
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
+		?>
+	</div>
+	
 	<br>
 	<h3 style="margin-left: 150px;"> Profile </h3>
 	<div class="divider" style="border-bottom: 1px solid #414242; margin: 20px 0px;"></div>

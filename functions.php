@@ -1,7 +1,7 @@
 <?php
 
 	function connect(){
-		//Oracle DB user name
+		// Oracle DB user name
 		$username = 'PROJECT';
 
 		// Oracle DB user password
@@ -10,7 +10,7 @@
 		// Oracle DB connection string
 		$connection_string = 'localhost/xe';
 
-		//Connect to an Oracle database
+		// Connect to an Oracle database
 		$connection = oci_connect(
 		$username,
 		$password,
@@ -18,11 +18,11 @@
 		);
 
 		If (!$connection)
-		echo 'Connection failed';
+			echo 'Connection failed';
 		else
-		echo 'Connected to Oracle DB';
+			echo 'Connected to Oracle DB';
 
 		return $connection;
-	}	
+	}
 ?>
 

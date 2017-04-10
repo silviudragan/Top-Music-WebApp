@@ -14,41 +14,48 @@
 
 	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="test_connection.php"> Home </a></li>
+			<li><a href="index.php"> Home </a></li>
 			<li><a href="login.php">Login</a></li>
 			<li><a href="register.php">Register</a></li>
 		</ul>
 	</div>
 
-	<?php
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
-		// define variables and set to empty values
-		$usernameErr = $passwordErr = "";
-		$username = $password = "";
+	<div class="container text-center text-info bg-danger">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		  if (empty($_POST["username"])) {
-		    $usernameErr = "Username is required";
-		  } else {
-		    $username = test_input($_POST["username"]);
-		  }
-		  
-		  if (empty($_POST["password"])) {
-		    $passwordErr = "Password is required";
-		  } else {
-		    $password = test_input($_POST["password"]);
-		  }
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
 
-		}
+			// define variables and set to empty values
+			$usernameErr = $passwordErr = "";
+			$username = $password = "";
 
-		function test_input($data) {
-		  $data = trim($data);
-		  $data = stripslashes($data);
-		  $data = htmlspecialchars($data);
-		  return $data;
-		}
-	?>
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  if (empty($_POST["username"])) {
+			    $usernameErr = "Username is required";
+			  } else {
+			    $username = test_input($_POST["username"]);
+			  }
+			  
+			  if (empty($_POST["password"])) {
+			    $passwordErr = "Password is required";
+			  } else {
+			    $password = test_input($_POST["password"]);
+			  }
+
+			}
+
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
+	</div>
 
 	<h2 style="text-align: center;">Login</h2>
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  
@@ -106,10 +113,5 @@
 		}
 
 	?>
-
-
 </body>
-
-
-
 </html>

@@ -15,7 +15,7 @@
 
 	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="test_connection.php"> Home </a></li>
+			<li><a href="index.php">Home</a></li>
 			<li><a href="login.php">Login</a></li>
 			<li><a href="register.php">Register</a></li>
 		</ul>
@@ -23,13 +23,17 @@
 
 
 
+	<!-- Here we check if the connection with the Oracle DB Server is working -->
+	<div class="container text-center text-info bg-danger">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
 
-	<?php
-
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
-
-	?>
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
+		?>
+	</div>
 
 	<h3 style="text-align: center;">Top 1000 music voted</h3>
 	<?php
@@ -81,7 +85,7 @@
 		}
 		for($i = 1; $i<$number_of_pages;$i++){
 
-			?><a href="test_connection.php?page=<?php echo $i; ?>" style="text-decoration:none; margin-left: 140px; margin-right: -110px;"><?php echo $i. " "; ?> </a> <?php
+			?><a href="index.php?page=<?php echo $i; ?>" style="text-decoration:none; margin-left: 140px; margin-right: -110px;"><?php echo $i. " "; ?> </a> <?php
 		}
 
 		// Fetch the results of the query

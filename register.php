@@ -15,54 +15,60 @@
 
 	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
 		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="test_connection.php"> Home </a></li>
+			<li><a href="index.php"> Home </a></li>
 			<li><a href="login.php">Login</a></li>
 			<li><a href="register.php">Register</a></li>
 		</ul>
 	</div>
 
+	<div class="container text-center text-info bg-danger">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
 
-	<?php
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
-		// define variables and set to empty values
-		$usernameErr = $emailErr = $passwordErr = $repasswordErr = "";
-		$username = $email = $password = $repassword = "";
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
+			
+			// define variables and set to empty values
+			$usernameErr = $emailErr = $passwordErr = $repasswordErr = "";
+			$username = $email = $password = $repassword = "";
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		  if (empty($_POST["username"])) {
-		    $usernameErr = "Name is required";
-		  } else {
-		    $username = test_input($_POST["username"]);
-		  }
-		  
-		  if (empty($_POST["password"])) {
-		    $passwordErr = "Password is required";
-		  } else {
-		    $password = test_input($_POST["password"]);
-		  }
-		    
-		  if (empty($_POST["repassword"])) {
-		    $repasswordErr = "Confirm password is required";
-		  } else {
-		    $repassword = test_input($_POST["repassword"]);
-		  }
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  if (empty($_POST["username"])) {
+			    $usernameErr = "Name is required";
+			  } else {
+			    $username = test_input($_POST["username"]);
+			  }
+			  
+			  if (empty($_POST["password"])) {
+			    $passwordErr = "Password is required";
+			  } else {
+			    $password = test_input($_POST["password"]);
+			  }
+			    
+			  if (empty($_POST["repassword"])) {
+			    $repasswordErr = "Confirm password is required";
+			  } else {
+			    $repassword = test_input($_POST["repassword"]);
+			  }
 
-		  if (empty($_POST["email"])) {
-		    $email = "";
-		  } else {
-		    $email = test_input($_POST["email"]);
-		  }
+			  if (empty($_POST["email"])) {
+			    $email = "";
+			  } else {
+			    $email = test_input($_POST["email"]);
+			  }
 
-		}
+			}
 
-		function test_input($data) {
-		  $data = trim($data);
-		  $data = stripslashes($data);
-		  $data = htmlspecialchars($data);
-		  return $data;
-		}
-	?>
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
+	</div>
 
 	<h2 style="text-align: center;">Register</h2>
 	<p style="text-align: center;"><span class="error">* required field.</span></p>

@@ -18,7 +18,7 @@
 	{
 		echo "<script type = \"text/javascript\">
 	                                    alert(\"Account deleted...\");
-	                                    window.location = (\"test_connection.php\");
+	                                    window.location = (\"index.php\");
 	                                    </script>"; 
 	}
 
