@@ -4,26 +4,27 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Profile</title>
+	<?php
+		$username = $_GET['user'];
+	?>
+	<title>Profile - <?php echo $username; ?></title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
 </head>
 
-<body style="background-color:#ebebe0;">
+<body style="background-color:#FAC8CD;">
 
-	<?php
-		$username = $_GET['user'];
-	?>
-	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
-		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="meniu.php?user=<?php echo $username; ?>"> Home </a></li>
-			<li><a href="profile.php?user=<?php echo $username; ?>">Profile</a></li>
-			<li><a href="index.php">Logout</a></li>
+	<!-- The omnipresent navbar -->
+	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
+		<ul class="nav nav-justified">
+			<li><a href="meniu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
+			<li><a href="profile.php?user=<?php echo $username; ?>" style="color: white">Profile</a></li>
+			<li><a href="index.php" style="color: white">Logout</a></li>
 		</ul>
 	</div>
 
-	<div class="container text-center text-info bg-danger">
+	<div class="nav nav-justified text-center text-info bg-primary">
 		<?php
 			require_once(dirname(__FILE__) . '/functions.php');
 			$connection = connect();
@@ -33,7 +34,7 @@
 			}
 		?>
 	</div>
-	
+
 	<br>
 	<h3 style="margin-left: 150px;"> Profile </h3>
 	<div class="divider" style="border-bottom: 1px solid #414242; margin: 20px 0px;"></div>
@@ -145,8 +146,5 @@
         echo "<br><a href='update.php?user=$username'><h4 style='margin-left:70px;'> Change password </h4></a>";
 
 	?>
-
-
 </body>
-
 </html>

@@ -10,20 +10,26 @@
 
 </head>
 
-<body style="background-color:#ebebe0;">
+<body style="background-color:#FAC8CD;">
 
-	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
-		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="meniu.php?user=<?php echo $username; ?>"> Home </a></li>
-			<li><a href="profile.php?user=<?php echo $username; ?>">Profile</a></li>
-			<li><a href="index.php">Logout</a></li>
+	<!-- The omnipresent navbar -->
+	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
+		<ul class="nav nav-justified">
+			<li><a href="meniu.php?user=<?php echo $username; ?>" style="color: white"> Home </a></li>
+			<li><a href="profile.php?user=<?php echo $username; ?>" style="color: white">Profile</a></li>
+			<li><a href="index.php" style="color: white">Logout</a></li>
 		</ul>
 	</div>
 
-	<div class="container text-center text-info bg-danger">
+	<div class="nav nav-justified text-center text-info bg-primary">
 		<?php
 			require_once(dirname(__FILE__) . '/functions.php');
 			$connection = connect();
+
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
+
 			// define variables and set to empty values
 			$usernameErr = $newpasswordErr = $passwordErr = $newpassword2Err = "";
 			$username = $newpassword = $password = $newpassword2 = "";
