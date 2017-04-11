@@ -44,10 +44,10 @@
 
 	<h3 class="text-center">Testing Page</h3>
 
-	<div>
+	<div class="container text-center">
 		<?php
 
-			$p_input = 'TORLEANU';
+			$p_input = 'TEST';
 			
 			$sql_stmt = 'BEGIN testare_procedura.afisare( :p_input, :p_output ); END;';
 			
@@ -73,6 +73,57 @@
 			print "$p_output";
 		?>
 	</div>
+
+	<div class="container text-center">
+		<?php
+			$p_username = 'user3091';
+
+			$sql_stmt = 'BEGIN server_procedures.distributie( :p_username, :ref ); END;';
+
+			$stid = oci_parse($connection, $sql_stmt);
+
+			if (!$stid) {
+			    $e = oci_error($connection);
+			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+			}
+
+			$ref_cursor = oci_new_cursor($connection);
+
+			oci_bind_by_name($stid, ':p_username', $p_username, -1);
+
+			oci_bind_by_name($stid, ':ref', $ref_cursor, -1, OCI_B_CURSOR);
+
+			if(oci_execute($stid)) {
+
+				if(oci_execute($ref_cursor)) {
+
+					print "<br><table border='1' align='center'>\n";
+					print "<tr>\n";
+					print "<td><strong>Genre</strong></td> <td><strong>Positive Votes %</strong></td>";
+					print "</tr>";
+
+					while ($row = oci_fetch_array($ref_cursor, OCI_ASSOC+OCI_RETURN_NULLS)) {
+					    print "<tr>\n";
+					    foreach ($row as $item) {
+					        print "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+					    }
+					    print "</tr>\n";
+					}
+					print "</table>\n";
+				}
+
+				else {
+					$e = oci_error();
+					trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+			}
+			else {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+			}
+		?>
+	</div>
+
 </body>
 </html>
 
