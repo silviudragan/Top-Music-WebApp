@@ -84,6 +84,11 @@
 			  } else {
 			    $search = test_input($_POST["search"]);
 			  }
+			  if (empty($_POST["option"])) {
+			    $optionErr = "Must select an option";
+			  } else {
+			    $option = test_input($_POST["option"]);
+			  }
 			}
 			function test_input($data) {
 			  $data = trim($data);
@@ -95,7 +100,11 @@
 
 		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center; margin-left:100px;">  
 		  <input type="text" name="search">
-		  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;"> 
+		  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;">
+		  <br>
+		  <input type="radio" name="option" value="posted_songs" checked> Songs Posted
+		  <input type="radio" name="option" value="positive_votes"> Positive Votes
+		  <input type="radio" name="option" value="negative_votes"> Negative Votes
 		  <span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
 		</form>
 
@@ -104,8 +113,20 @@
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 				$p_username = $search;
+				
+				if($option == "posted_songs"){
+					$p_preference = 1;
+				}
 
-				$sql_stmt = 'BEGIN server_procedures.distributie( :p_username, :ref ); END;';
+				if($option == "positive_votes"){
+					$p_preference = 2;
+				}
+
+				if($option == "negative_votes"){
+					$p_preference = 3;
+				}
+
+				$sql_stmt = 'BEGIN server_procedures.distributie( :p_username, :p_preference, :ref ); END;';
 
 				$stid = oci_parse($connection, $sql_stmt);
 
@@ -117,6 +138,8 @@
 				$ref_cursor = oci_new_cursor($connection);
 
 				oci_bind_by_name($stid, ':p_username', $p_username, -1);
+
+				oci_bind_by_name($stid, ':p_preference', $p_preference, -1);
 
 				oci_bind_by_name($stid, ':ref', $ref_cursor, -1, OCI_B_CURSOR);
 
