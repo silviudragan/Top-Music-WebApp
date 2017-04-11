@@ -49,7 +49,7 @@
 
 	<?php
 		// define variables and set to empty values
-		$earch = $searchErr = $option = $optionErr = "";
+		$search = $searchErr = $option = $optionErr = "";
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		  if (empty($_POST["search"])) {
 		    $searchErr = "<br>*the field is empty";
@@ -85,27 +85,34 @@
 	<?php
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
+
 			if($option == "name"){
-				$query = "SELECT id_song, name, link, votes, posted_time from SONGS where NAME LIKE '%$search%'";
+				$query = "SELECT id_song, name, link, votes, posted_time from SONGS where lower(NAME) LIKE lower('%$search%')";
 			}
+
 			if($option == "genre"){
 				$query = "SELECT s.id_song, s.name, s.link, s.votes, s.posted_time from SONGS s 
 						join SONG_GENRE sg on s.id_song = sg.id_song
 						join GENRES g on g.id_genre = sg.id_genre
-						where lower(g.name) like '%$search%'";
+						where lower(g.name) like lower('%$search%')";
 			}
+
 			if($option == "posted"){
 				$query = "SELECT s.id_song, s.name, s.link, s.votes, s.posted_time from SONGS s
 						join USERS u on u.id = s.id_user
-						where username like '%$search%'";
+						where lower(username) like lower('%$search%')";
 			}
+
 			$stid = oci_parse($connection, $query);
+
 			if (!$stid) {
 			    $e = oci_error($connection);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
+
 			// Perform the logic of the query
 			$r = oci_execute($stid);
+			
 			if (!$r) {
 			    $e = oci_error($stid);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -115,16 +122,22 @@
 			print "<h3 style='text-align: center'> Results </h3>";
 			print "<table border='1' align='center'>\n";
 			print "<tr>\n";
-			print "<td> ID Song </td><td> Song </td><td> Link </td><td> Votes </td><td> Published Date </td>";
+			print "<td><strong>ID Song</strong></td>
+				<td><strong>Song</strong></td>
+				<td><strong> Link </strong></td>
+				<td><strong> Votes </strong></td>
+				<td><strong> Published Date </strong></td>";
 			print "</tr>";
+
 			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
 			    print "<tr>\n";
 			    foreach ($row as $item) {
-			        print "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+			        print "<td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
 			    }
 			    print "</tr>\n";
 			}
 			print "</table>\n";
+
 			oci_free_statement($stid);
 		}
 	?>

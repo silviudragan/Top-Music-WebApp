@@ -77,26 +77,28 @@
 	</div>
 
 	<h2 style="text-align: center;">Change password</h2>
+
 	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  
-	  Username: <input type="text" name="username">
-	  <span class="error"><?php echo $usernameErr;?></span>
-	  <br><br>
-	  Old password: <input type="password" name="password">
-	  <span class="error"><?php echo $passwordErr;?></span>
-	  <br><br>
-	  New password: <input type="password" name="newpassword">
-	  <span class="error"><?php echo $newpasswordErr;?></span>
-	  <br><br>
-	  Confirm password: <input type="password" name="newpassword2">
-	  <span class="error"><?php echo $newpassword2Err;?></span>
-	  <br><br>
-	  <input type="submit" name="submit" value="Change password">
-	  <input type="reset"> 
+	  	Username: <input type="text" name="username">
+	  	<span class="error"><?php echo $usernameErr;?></span>
+	  	<br><br>
+	  	Old password: <input type="password" name="password">
+	  	<span class="error"><?php echo $passwordErr;?></span>
+	  	<br><br>
+	  	New password: <input type="password" name="newpassword">
+	  	<span class="error"><?php echo $newpasswordErr;?></span>
+	  	<br><br>
+	  	Confirm password: <input type="password" name="newpassword2">
+	  	<span class="error"><?php echo $newpassword2Err;?></span>
+	  	<br><br>
+	  	<input type="submit" name="submit" value="Change password">
+	  	<input type="reset"> 
 	</form>
 
 	<?php
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
+
 			$query = "UPDATE users set password='$newpassword' where username='$username'";
 			$stid = oci_parse($connection, $query);
 			if (!$stid) {
@@ -120,10 +122,5 @@
 		}
 
 	?>
-
-
 </body>
-
-
-
 </html>

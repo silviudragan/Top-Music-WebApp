@@ -104,7 +104,9 @@
 
 			for($i = 1; $i<$number_of_pages;$i++){
 
-				?><a href="index.php?page=<?php echo $i; ?>"><?php echo $i. " "; ?> </a> <?php
+				?>
+				<a href="index.php?page=<?php echo $i; ?>"><?php echo $i. " "; ?></a> 
+				<?php
 			}
 
 			// Fetch the results of the query
