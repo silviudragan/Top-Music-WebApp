@@ -41,9 +41,6 @@
 		?>
 	</div>
 
-
-	<h3 class="text-center">Testing Page</h3>
-
 	<div class="container text-center">
 		<?php
 
@@ -75,52 +72,86 @@
 	</div>
 
 	<div class="container text-center">
+
+		<h3>Statistics for all users!</h3>
+
 		<?php
-			$p_username = 'user3091';
-
-			$sql_stmt = 'BEGIN server_procedures.distributie( :p_username, :ref ); END;';
-
-			$stid = oci_parse($connection, $sql_stmt);
-
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+			// define variables and set to empty values
+			$search = $searchErr = $option = $optionErr = "";
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  if (empty($_POST["search"])) {
+			    $searchErr = "<br>*the field is empty";
+			  } else {
+			    $search = test_input($_POST["search"]);
+			  }
 			}
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
 
-			$ref_cursor = oci_new_cursor($connection);
+		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center; margin-left:100px;">  
+		  <input type="text" name="search">
+		  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;"> 
+		  <span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
+		</form>
 
-			oci_bind_by_name($stid, ':p_username', $p_username, -1);
+		<?php
 
-			oci_bind_by_name($stid, ':ref', $ref_cursor, -1, OCI_B_CURSOR);
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-			if(oci_execute($stid)) {
+				$p_username = $search;
 
-				if(oci_execute($ref_cursor)) {
+				$sql_stmt = 'BEGIN server_procedures.distributie( :p_username, :ref ); END;';
 
-					print "<br><table border='1' align='center'>\n";
-					print "<tr>\n";
-					print "<td><strong>Genre</strong></td> <td><strong>Positive Votes %</strong></td>";
-					print "</tr>";
+				$stid = oci_parse($connection, $sql_stmt);
 
-					while ($row = oci_fetch_array($ref_cursor, OCI_ASSOC+OCI_RETURN_NULLS)) {
-					    print "<tr>\n";
-					    foreach ($row as $item) {
-					        print "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
-					    }
-					    print "</tr>\n";
-					}
-					print "</table>\n";
+				if (!$stid) {
+				    $e = oci_error($connection);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 				}
 
+				$ref_cursor = oci_new_cursor($connection);
+
+				oci_bind_by_name($stid, ':p_username', $p_username, -1);
+
+				oci_bind_by_name($stid, ':ref', $ref_cursor, -1, OCI_B_CURSOR);
+
+				if(oci_execute($stid)) {
+
+					if(oci_execute($ref_cursor)) {
+
+						print "<br><table border='1' align='center'>\n";
+						print "<tr>\n";
+						print "<td><strong>Genre</strong></td> 
+							<td><strong>Positive Votes %</strong></td>
+							<td><strong>Voted Songs</strong></td>";
+						print "</tr>";
+
+						while ($row = oci_fetch_array($ref_cursor, OCI_ASSOC+OCI_RETURN_NULLS)) {
+						    print "<tr>\n";
+						    foreach ($row as $item) {
+						        print "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+						    }
+						    print "</tr>\n";
+						}
+						print "</table>\n";
+					}
+
+					else {
+						$e = oci_error();
+						trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+					}
+				}
 				else {
 					$e = oci_error();
 					trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 				}
 			}
-			else {
-				$e = oci_error();
-				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
+			
 		?>
 	</div>
 
