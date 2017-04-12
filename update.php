@@ -99,7 +99,7 @@
 		// Prepare the statement
 		if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-			$query = "UPDATE users set password='$newpassword' where username='$username'";
+			$query = "SELECT * from USERS where USERNAME='$username' and PASSWORD='$password'";
 			$stid = oci_parse($connection, $query);
 			if (!$stid) {
 			    $e = oci_error($connection);
@@ -112,13 +112,41 @@
 			    $e = oci_error($stid);
 			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
-			else{
-				echo "<script type = \"text/javascript\">
-	                                    alert(\"Password changed...\");
-	                                    window.location = (\"menu.php?user=$username\");
+
+			// Fetch the results of the query
+			$valid = false;
+			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
+			    $valid = true;
+			}
+			if($valid == false){
+				 echo "<script type = \"text/javascript\">
+	                                    alert(\"Old password is wrong...\");
+	                                    window.location = (\"update.php?user=$username.php\");
 	                                    </script>"; 
 			}
-			oci_free_statement($stid);
+			else{
+
+				$query = "UPDATE users set password='$newpassword' where username='$username'";
+				$stid = oci_parse($connection, $query);
+				if (!$stid) {
+				    $e = oci_error($connection);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+
+				// Perform the logic of the query
+				$r = oci_execute($stid);
+				if (!$r) {
+				    $e = oci_error($stid);
+				    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+				}
+				else{
+					echo "<script type = \"text/javascript\">
+		                                    alert(\"Password changed...\");
+		                                    window.location = (\"menu.php?user=$username\");
+		                                    </script>"; 
+				}
+				oci_free_statement($stid);
+			}
 		}
 
 	?>

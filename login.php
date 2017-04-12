@@ -122,7 +122,6 @@
 	                                    </script>"; 
 			}
 			else{
-	            //echo "<br><a href='menu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
 	            echo "<script type='text/javascript'>location.href = 'menu.php?user=$username';</script>";
 			}
 
