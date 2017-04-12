@@ -25,6 +25,7 @@
 		<ul class="nav nav-justified">
 			<li><a href="index.php" style="color: white">Home</a></li>
 			<li><a href="stats.php" style="color: white">Stats</a></li>
+			<li><a href="lucky.php" style="color: white">Lucky Songs</a></li>
 			<li><a href="login.php" style="color: white">Login</a></li>
 			<li><a href="register.php" style="color: white">Register</a></li>
 		</ul>
@@ -43,38 +44,10 @@
 	</div>
 
 	<div class="container text-center">
-		<?php
-
-			$p_input = 'TEST';
-			
-			$sql_stmt = 'BEGIN testare_procedura.afisare( :p_input, :p_output ); END;';
-			
-			$stid = oci_parse($connection, $sql_stmt);
-
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
-
-			oci_bind_by_name($stid, ':p_input', $p_input, 32);
-
-			oci_bind_by_name($stid, ':p_output', $p_output, 32);
-
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
-
-			print "$p_output";
-		?>
-	</div>
-
-	<div class="container text-center">
 
 		<h3>Statistics for all users!</h3>
+
+		<h4>Insert a username and an option and get the distribution of songs</h4>
 
 		<?php
 			// define variables and set to empty values

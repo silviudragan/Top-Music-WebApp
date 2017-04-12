@@ -25,6 +25,7 @@
 		<ul class="nav nav-justified">
 			<li><a href="index.php" style="color: white">Home</a></li>
 			<li><a href="stats.php" style="color: white">Stats</a></li>
+			<li><a href="lucky.php" style="color: white">Lucky Songs</a></li>
 			<li><a href="login.php" style="color: white">Login</a></li>
 			<li><a href="register.php" style="color: white">Register</a></li>
 		</ul>
