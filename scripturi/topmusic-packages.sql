@@ -19,18 +19,19 @@ END;
 ----------------------
 
 -- Package ce contine functii ce fac calcule pe partea de PL/SQL. Vor fi apelate simplu din PHP
-DROP PACKAGE server_procedures;
+DROP PACKAGE stats_page;
 /
 
-CREATE OR REPLACE PACKAGE server_procedures AS
+CREATE OR REPLACE PACKAGE stats_page AS
   
   FUNCTION get_id(p_username users.username%TYPE) RETURN users.id%TYPE;
   PROCEDURE distributie(p_username IN users.username%TYPE, p_search_type IN INTEGER, cursor_output OUT SYS_REFCURSOR);
+  PROCEDURE lucky(p_username IN users.username%TYPE, p_number IN INTEGER, cursor_output OUT SYS_REFCURSOR);
   
 END;
 /
 
-CREATE OR REPLACE PACKAGE BODY server_procedures AS
+CREATE OR REPLACE PACKAGE BODY stats_page AS
   
   FUNCTION get_id(p_username users.username%TYPE) RETURN users.id%TYPE AS
     v_id users.id%TYPE := 0;
@@ -69,4 +70,15 @@ CREATE OR REPLACE PACKAGE BODY server_procedures AS
     
   END distributie;
   
+  -- Procedura ce ii recomanda user-ului 10 piese cele mai populare si cele mai apropiate de gustul lui pe care nu le-a votat inca
+  PROCEDURE lucky(p_username IN users.username%TYPE, p_number IN INTEGER, cursor_output OUT SYS_REFCURSOR) AS
+    v_id_user users.id%TYPE := get_id(p_username);
+  BEGIN
+    
+    OPEN cursor_output FOR
+      SELECT UNIQUE s.id_song, s.name, s.votes FROM songs s, users u, votes v, genres g, song_genre sg
+      WHERE s.id_song = v.id_song AND NOT v.id_user = u.id AND u.id = v_id_user AND g.id_genre = sg.id_genre AND sg.id_song = v.id_song
+      AND g.id_genre IN (SELECT g.id_genre FROM users u, genres g, songs s, song_genre sg WHERE g.id_genre = sg.id_genre AND sg.id_song = s.id_song
+      AND s.id_user = u.id AND u.id = v_id_user) AND rownum <= TRUNC(DBMS_RANDOM.value(1, p_number)) ORDER BY s.votes DESC;
+  END lucky;
 END;
