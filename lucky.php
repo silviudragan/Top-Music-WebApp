@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Stats Page</title>
+	<title>Lucky Page</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
@@ -45,23 +45,23 @@
 
 	<div class="container text-center">
 
-		<h3>Statistics for all users!</h3>
-
-		<h4>Insert a username and an option and get the distribution of songs</h4>
+		<h3>Lucky Songs</h3>
+		<h4>Insert a <strong>username</strong> and a <strong>number</strong> between 1 and 10000 and get 
+		a list of songs that are in the genres liked by the user but were not voted yet by him</h4>	
 
 		<?php
 			// define variables and set to empty values
-			$search = $searchErr = $option = $optionErr = $luckynumber = $luckynumberErr = "";
+			$luckyuser = $luckynumber = $luckynumberErr = $luckyuserErr = "";
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			  if (empty($_POST["search"])) {
-			    $searchErr = "<br>*the field is empty";
+			  if (empty($_POST["luckyuser"])) {
+			    $luckyuserErr = "<br>*the field is empty";
 			  } else {
-			    $search = test_input($_POST["search"]);
+			    $luckyuser = test_input($_POST["luckyuser"]);
 			  }
-			  if (empty($_POST["option"])) {
-			    $optionErr = "Must select an option";
+			  if (empty($_POST["luckynumber"])) {
+			    $luckynumberErr = "<br>*the field is empty";
 			  } else {
-			    $option = test_input($_POST["option"]);
+			    $luckynumber = test_input($_POST["luckynumber"]);
 			  }
 			}
 			function test_input($data) {
@@ -73,34 +73,20 @@
 		?>
 
 		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center; margin-left:100px;">  
-		  <input type="text" name="search">
-		  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;">
-		  <br>
-		  <input type="radio" name="option" value="posted_songs" checked> Songs Posted
-		  <input type="radio" name="option" value="positive_votes"> Positive Votes
-		  <input type="radio" name="option" value="negative_votes"> Negative Votes
-		  <span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
+			Username:<input type="text" name="luckyuser">
+			Number:<input type="text" name="luckynumber">
+			<input type="submit" name="submit2" value="Feeling Lucky" style="width: 170px; margin-left: 10px;">
+			<span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
 		</form>
 
 		<?php
 
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-				$p_username = $search;
-				
-				if($option == "posted_songs"){
-					$p_preference = 1;
-				}
+				$p_username = $luckyuser;
+				$p_number = $luckynumber;
 
-				if($option == "positive_votes"){
-					$p_preference = 2;
-				}
-
-				if($option == "negative_votes"){
-					$p_preference = 3;
-				}
-
-				$sql_stmt = 'BEGIN stats_page.distributie( :p_username, :p_preference, :ref ); END;';
+				$sql_stmt = 'BEGIN stats_page.lucky( :p_username, :p_number, :ref ); END;';
 
 				$stid = oci_parse($connection, $sql_stmt);
 
@@ -113,7 +99,7 @@
 
 				oci_bind_by_name($stid, ':p_username', $p_username, -1);
 
-				oci_bind_by_name($stid, ':p_preference', $p_preference, -1);
+				oci_bind_by_name($stid, ':p_number', $p_number, -1);
 
 				oci_bind_by_name($stid, ':ref', $ref_cursor, -1, OCI_B_CURSOR);
 
@@ -123,9 +109,9 @@
 
 						print "<br><table border='1' align='center'>\n";
 						print "<tr>\n";
-						print "<td><strong>Genre</strong></td> 
-							<td><strong>Positive Votes %</strong></td>
-							<td><strong>Voted Songs</strong></td>";
+						print "<td><strong>ID Song</strong></td> 
+							<td><strong>Song Name</strong></td>
+							<td><strong>Votes</strong></td>";
 						print "</tr>";
 
 						while ($row = oci_fetch_array($ref_cursor, OCI_ASSOC+OCI_RETURN_NULLS)) {
