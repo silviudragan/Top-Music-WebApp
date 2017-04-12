@@ -76,7 +76,6 @@
 			Username:<input type="text" name="luckyuser">
 			Number:<input type="text" name="luckynumber">
 			<input type="submit" name="submit2" value="Feeling Lucky" style="width: 170px; margin-left: 10px;">
-			<span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
 		</form>
 
 		<?php
@@ -114,14 +113,19 @@
 							<td><strong>Votes</strong></td>";
 						print "</tr>";
 
+						$is_data = false;
 						while ($row = oci_fetch_array($ref_cursor, OCI_ASSOC+OCI_RETURN_NULLS)) {
 						    print "<tr>\n";
 						    foreach ($row as $item) {
 						        print "    <td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+						        $is_data = true;
 						    }
 						    print "</tr>\n";
 						}
 						print "</table>\n";
+						if($is_data == false){
+							echo "<h4 style='text-align:center;'>No data found. </h4>";
+						}
 					}
 
 					else {

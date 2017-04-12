@@ -129,14 +129,19 @@
 				<td><strong> Published Date </strong></td>";
 			print "</tr>";
 
+			$is_data = false;
 			while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
 			    print "<tr>\n";
 			    foreach ($row as $item) {
 			        print "<td>" . ($item !== null ? htmlentities($item, ENT_QUOTES) : "&nbsp;") . "</td>\n";
+			        $is_data = true;
 			    }
 			    print "</tr>\n";
 			}
 			print "</table>\n";
+			if($is_data == false){
+				echo "<h4 style='text-align:center;'>No data found. </h4>";
+			}
 
 			oci_free_statement($stid);
 		}
