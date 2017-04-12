@@ -11,76 +11,98 @@
 
 </head>
 
-<body style="background-color:#ebebe0;">
+<body style="background-color:#FAC8CD;">
 
-	<div class="navbar-collapse collapse" style="background-color:#d6d6c2; margin-top: 0px;">
-		<ul class="nav navbar-nav navbar-left" style="margin-left: 50px;">
-			<li><a href="test_connection.php"> Home </a></li>
-			<li><a href="login.php">Login</a></li>
-			<li><a href="register.php">Register</a></li>
+	<!-- The omnipresent navbar -->
+	<style>
+		.nav > li > a:hover, .nav-default > li > a:focus {
+	    background-color: #554E60;
+	    color: #554E60;
+	}
+	</style>
+
+	<div class="navbar-collapse collapse" style="background-color:#3C3744; margin-top: 0px;">
+		<ul class="nav nav-justified">
+			<li><a href="index.php" style="color: white">Home</a></li>
+			<li><a href="login.php" style="color: white">Login</a></li>
+			<li><a href="register.php" style="color: white">Register</a></li>
 		</ul>
 	</div>
 
+	<div class="nav nav-justified text-center text-info bg-primary">
+		<?php
+			require_once(dirname(__FILE__) . '/functions.php');
+			$connection = connect();
 
-	<?php
-		require_once(dirname(__FILE__) . '/functions.php');
-		$connection = connect();
-		// define variables and set to empty values
-		$usernameErr = $emailErr = $passwordErr = $repasswordErr = "";
-		$username = $email = $password = $repassword = "";
+			if(!$connection) {
+				echo '<br>Try to check if Oracle Services are up and running';
+			}
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		  if (empty($_POST["username"])) {
-		    $usernameErr = "Name is required";
-		  } else {
-		    $username = test_input($_POST["username"]);
-		  }
-		  
-		  if (empty($_POST["password"])) {
-		    $passwordErr = "Password is required";
-		  } else {
-		    $password = test_input($_POST["password"]);
-		  }
-		    
-		  if (empty($_POST["repassword"])) {
-		    $repasswordErr = "Confirm password is required";
-		  } else {
-		    $repassword = test_input($_POST["repassword"]);
-		  }
+			// define variables and set to empty values
+			$usernameErr = $emailErr = $passwordErr = $repasswordErr = "";
+			$username = $email = $password = $repassword = "";
 
-		  if (empty($_POST["email"])) {
-		    $email = "";
-		  } else {
-		    $email = test_input($_POST["email"]);
-		  }
+			if ($_SERVER["REQUEST_METHOD"] == "POST") {
+			  if (empty($_POST["username"])) {
+			    $usernameErr = "Name is required";
+			  } else {
+			    $username = test_input($_POST["username"]);
+			  }
+			  
+			  if (empty($_POST["password"])) {
+			    $passwordErr = "Password is required";
+			  } else {
+			    $password = test_input($_POST["password"]);
+			  }
+			    
+			  if (empty($_POST["repassword"])) {
+			    $repasswordErr = "Confirm password is required";
+			  } else {
+			    $repassword = test_input($_POST["repassword"]);
+			  }
 
-		}
+			  if (empty($_POST["email"])) {
+			    $email = "";
+			  } else {
+			    $email = test_input($_POST["email"]);
+			  }
 
-		function test_input($data) {
-		  $data = trim($data);
-		  $data = stripslashes($data);
-		  $data = htmlspecialchars($data);
-		  return $data;
-		}
-	?>
+			}
 
-	<h2 style="text-align: center;">Register</h2>
-	<p style="text-align: center;"><span class="error">* required field.</span></p>
-	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center;">  
-	  Username: <input type="text" name="username">
-	  <span class="error">* <?php echo $usernameErr;?></span>
-	  <br><br>
-	  Password: <input type="password" name="password">
-	  <span class="error">* <?php echo $passwordErr;?></span>
-	  <br><br>
-	  Confirm password: <input type="password" name="repassword">
-	  <span class="error">* <?php echo $repasswordErr;?></span>
-	  <br><br>
-	  E-mail: <input type="text" name="email">
-	  <span class="error"><?php echo $emailErr;?></span>
-	  <br><br>
-	  <input type="submit" name="submit" value="Submit">  
-	</form>
+			function test_input($data) {
+			  $data = trim($data);
+			  $data = stripslashes($data);
+			  $data = htmlspecialchars($data);
+			  return $data;
+			}
+		?>
+	</div>
+
+	<div class="container text-center">
+		<h2>Register</h2>
+		<p><span class="error">* required field.</span></p>
+
+		<div class="container text-center">
+			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+			  Username: <input type="text" name="username">
+			  <span class="error">* <?php echo $usernameErr;?></span>
+			  <br><br>
+			  Password: <input type="password" name="password">
+			  <span class="error">* <?php echo $passwordErr;?></span>
+			  <br><br>
+			  Confirm password: <input type="password" name="repassword">
+			  <span class="error">* <?php echo $repasswordErr;?></span>
+			  <br><br>
+			  E-mail: <input type="text" name="email">
+			  <span class="error"><?php echo $emailErr;?></span>
+			  <br><br>
+			 
+			  <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+			  <input class="btn btn-primary" type="reset">
+			</form>
+		</div>
+
+	</div>
 
 	<?php
 		if($password != $repassword)
@@ -133,8 +155,11 @@
 	                                    </script>"; 
 				}
 				else{
+					/*
 					echo "<br> <h4 style='text-align: center'> Registration successful </h4>";
-		            echo "<br><a href='meniu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
+		            echo "<br><a href='menu.php?user=$username'><h4 style='text-align: center'> Click to access the main page </h4></a>";
+		            */
+		            echo "<script type='text/javascript'>location.href = 'menu.php?user=$username';</script>";
 				}
 
 
@@ -142,9 +167,5 @@
 				}
 			}
 	?>
-
 </body>
-
-
-
 </html>
