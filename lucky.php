@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Stats Page</title>
+	<title>Lucky Page</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/home-page.css" rel="stylesheet">
@@ -43,52 +43,19 @@
 	</div>
 
 	<div class="container text-center">
-		<?php
 
-			$p_input = 'TEST';
-			
-			$sql_stmt = 'BEGIN testare_procedura.afisare( :p_input, :p_output ); END;';
-			
-			$stid = oci_parse($connection, $sql_stmt);
-
-			if (!$stid) {
-			    $e = oci_error($connection);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
-
-			oci_bind_by_name($stid, ':p_input', $p_input, 32);
-
-			oci_bind_by_name($stid, ':p_output', $p_output, 32);
-
-			// Perform the logic of the query
-			$r = oci_execute($stid);
-
-			if (!$r) {
-			    $e = oci_error($stid);
-			    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-			}
-
-			print "$p_output";
-		?>
-	</div>
-
-	<div class="container text-center">
-
-		<h3>Statistics for all users!</h3>
+		<h3>Lucky Songs</h3>
+		<h4>Insert a <strong>username</strong> and a <strong>number</strong> between 1 and 10000 and get 
+		a list of songs that are in the genres liked by the user but were not voted yet by him</h4>	
 
 		<?php
 			// define variables and set to empty values
 			$search = $searchErr = $option = $optionErr = $luckynumber = $luckynumberErr = "";
 			if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			  if (empty($_POST["search"])) {
-			    $searchErr = "<br>*the field is empty";
+			  if (empty($_POST["luckynumber"])) {
+			    $luckynumberErr = "<br>*the field is empty";
 			  } else {
-			    $search = test_input($_POST["search"]);
-			  }
-			  if (empty($_POST["option"])) {
-			    $optionErr = "Must select an option";
-			  } else {
-			    $option = test_input($_POST["option"]);
+			    $luckynumber = test_input($_POST["luckynumber"]);
 			  }
 			}
 			function test_input($data) {
@@ -100,13 +67,10 @@
 		?>
 
 		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" style="text-align: center; margin-left:100px;">  
-		  <input type="text" name="search">
-		  <input type="submit" name="submit" value="Submit" style="width: 170px; margin-left: 10px;">
-		  <br>
-		  <input type="radio" name="option" value="posted_songs" checked> Songs Posted
-		  <input type="radio" name="option" value="positive_votes"> Positive Votes
-		  <input type="radio" name="option" value="negative_votes"> Negative Votes
-		  <span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
+			Username:<input type="text" name="luckyuser">
+			Number:<input type="text" name="luckynumber">
+			<input type="submit" name="submit2" value="Submit" style="width: 170px; margin-left: 10px;">
+			<span class="error" style="margin-left: 60px; color: red;"><?php echo $searchErr;?></span> 
 		</form>
 
 		<?php
