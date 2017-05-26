@@ -55,5 +55,3 @@ BEGIN
   
   UTL_FILE.FCLOSE(v_file);
 END;
-
-SELECT object_name FROM ALL_OBJECTS WHERE OBJECT_TYPE IN ('Materialized View') and OWNER='PROJECT';
