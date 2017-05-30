@@ -12,7 +12,7 @@ CREATE MATERIALIZED VIEW comments_view FOR UPDATE AS
 DROP MATERIALIZED VIEW comments_view;
 
 SELECT * FROM comments_view;
-select * from comments_view where id_comm = 3000;
+select * from comments_view where id_comm = 3001;
 select max(id_comm) from comments_view;
 
 INSERT INTO comments_view VALUES(3000, 177, 'Tralalala', SYSDATE);

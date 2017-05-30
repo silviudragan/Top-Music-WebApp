@@ -8,10 +8,6 @@ on songs(votes DESC, posted_time DESC);
 
 select * from songs where posted_time >= TO_DATE('01-JAN-88', 'dd-mm-yyyy') order by votes DESC, posted_time DESC;
 
-drop index second_index;
-
-select id_comm, id_user, comm from comments where length(comm) > 5 group by id_comm, id_user, comm;
-
 -- Second index on GROUP BY clause
 drop index second_index;
 
